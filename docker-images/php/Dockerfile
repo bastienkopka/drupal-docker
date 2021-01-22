@@ -10,11 +10,17 @@ RUN apk add --update \
     curl \
     wget \
     bash \ 
-    git 
+    git \
+    zip \
+    libzip-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev
 
 RUN docker-php-ext-install \
-    pdo_mysql
-
+    pdo \
+    pdo_mysql \
+    gd
 
 RUN set eux; \
         [ ! -d /var/www/app ]; \
