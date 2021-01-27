@@ -28,6 +28,8 @@ PHP_CONTAINER=php_$(PROJECT_NAME)
 init:
 	@cp ./docker-compose.$(INSTALL_ARGS).yml ./docker-compose.yml;
 	@cp ./env.$(INSTALL_ARGS) ./.env;
+	@sed -i "s/LOCAL_UID=1000/LOCAL_UID=$(UID)/g" ./.env;
+	@sed -i "s/LOCAL_GID=1000/LOCAL_GID=$(GID)/g" ./.env;
 	@mkdir -p ./www;
 
 build: init
@@ -51,22 +53,15 @@ nuke: stop
 shell:
 	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh
 
-create-project:
-	@docker exec -it $(PHP_CONTAINER) composer create-project --no-install drupal/recommended-project:9.1 .
-
 composer-install:
 	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) composer install --prefer-dist
 
 composer-update:
 	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) composer update
 
-set-environment:
-	@sudo cp ./env.$(INSTALL_ARGS) ./www/.env;
-
 fix-permissions:
-	@docker exec -it $(PHP_CONTAINER) /bin/sh -c 'cd /var/www/app && chown -R $(APP_USER):www-data .'
+	@docker exec -it $(PHP_CONTAINER) /bin/sh -c 'cd /var/www/app && chown -R $(APP_USER):$(APP_USER) .'
 
 
 ### Global commands
-install-new-project: build create-project fix-permissions set-environment
-install: build composer-install set-environment fix-permissions
+install: build composer-install fix-permissions
