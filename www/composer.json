@@ -34,10 +34,8 @@
                 "[web-root]/INSTALL.txt": false,
                 "[web-root]/README.txt": false,
                 "[web-root]/example.gitignore": false,
-                "[web-root]/modules/README.txt": false,
                 "[web-root]/profiles/README.txt": false,
                 "[web-root]/sites/README.txt": false,
-                "[web-root]/themes/README.txt": false,
                 "[web-root]/update.php": false,
                 "[web-root]/web.config": false
             },
@@ -64,14 +62,15 @@
     },
     "scripts": {
         "symlinks": [
-            "ln -sfn ../../config/modules web/modules/custom",
-            "ln -sfn ../../config/themes web/themes/custom"
+            "ln -sfn ../../modules web/modules/custom",
+            "ln -sfn ../../themes web/themes/custom"
         ],
         "pre-install-cmd": [
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
         ],
         "post-install-cmd": [
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
+            "@symlinks"
         ],
         "pre-update-cmd": [
             "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
