@@ -18,9 +18,9 @@ RUN apk add --update \
     libpng-dev
 
 RUN docker-php-ext-install \
-    pdo \
     pdo_mysql \
-    gd
+    gd \
+    opcache
 
 RUN set eux; \
         [ ! -d /var/www/app ]; \
@@ -30,8 +30,7 @@ RUN set eux; \
 
 # Create user and add user to group www-data
 RUN addgroup -g $GID -S $APP_USER; \
-    adduser -u $UID -D -S -s /bin/bash -G $APP_USER $APP_USER; \
-    adduser $APP_USER www-data
+    adduser -u $UID -D -S -s /bin/sh -G $APP_USER $APP_USER;
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
