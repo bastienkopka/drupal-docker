@@ -4,12 +4,12 @@
  * Database settings:
  */
 $databases['default']['default'] = array (
-  'database' => '_MYSQL_DATABASE_',
-  'username' => '_MYSQL_USER_',
-  'password' => '_MYSQL_PASS_',
+  'database' => getenv('MYSQL_DATABASE'),
+  'username' => getenv('MYSQL_USER'),
+  'password' => getenv('MYSQL_PASS'),
   'prefix' => '',
-  'host' => '_MYSQL_HOST_',
-  'port' => '_MYSQL_PORT_',
+  'host' => getenv('MYSQL_HOST'),
+  'port' => '3306',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
@@ -17,6 +17,4 @@ $databases['default']['default'] = array (
 /**
  * Location of configuration files.
  */
-$config_directories = array(
-  CONFIG_SYNC_DIRECTORY => '../config/sync',
-);
+$settings['config_sync_directory'] = '../config/sync';
