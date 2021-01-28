@@ -23,6 +23,11 @@ services:
         UID: ${LOCAL_UID}
         GID: ${LOCAL_GID}
         APP_USER: ${APP_USER}
+    environment: 
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASS}
+      MYSQL_HOST: ${MYSQL_HOST}
     volumes:
       - ./www:/var/www/app
       - ./docker-images/php/php.ini:/usr/local/etc/php/php.ini
