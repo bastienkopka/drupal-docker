@@ -1,0 +1,9 @@
+.env
+docker-compose.yml
+
+/docker-images/mysql/
+
+www/web/
+www/vendor/
+www/.editorconfig
+www/.gitattributes

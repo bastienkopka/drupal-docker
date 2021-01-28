@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mysql:
+    container_name: mysql_${PROJECT_NAME}
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASS}
+    ports:
+      - ${MYSQL_HTTP_PORT}:3306
+    restart: unless-stopped
+    volumes:
+      - ./docker-images/mysql:/var/lib/mysql
+
+  phpfpm:
+    container_name: php_${PROJECT_NAME}
+    build:
+      context: ./docker-images/php 
+      args:
+        UID: ${LOCAL_UID}
+        GID: ${LOCAL_GID}
+        APP_USER: ${APP_USER}
+    environment: 
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASS}
+      MYSQL_HOST: ${MYSQL_HOST}
+    volumes:
+      - ./www:/var/www/app
+      - ./docker-images/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker-images/php/php-fpm.conf:/etc/php/php-fpm.d/php-fpm.conf
+    depends_on:
+      - mysql
+    ports:
+      - ${PHP_PORT}:9000
+    restart: unless-stopped
+
+  nginx:
+    container_name: nginx_${PROJECT_NAME}
+    build:
+      context: ./docker-images/nginx
+    volumes:
+      - ./www:/var/www/app
+      - ./docker-images/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker-images/nginx/drupal.conf:/etc/nginx/conf.d/default.conf
+      #- ./docker-images/nginx/certs/:/etc/nginx/certs
+    depends_on:
+      - phpfpm
+    ports:
+      - ${NGINX_HTTP_PORT}:80
+      - ${NGINX_HTTPS_PORT}:443
+    restart: unless-stopped
