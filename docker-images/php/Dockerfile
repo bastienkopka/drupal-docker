@@ -6,7 +6,7 @@ ARG APP_USER
 
 ENV DRUSH_VERSION="0.8.0"
 
-RUN apk add --update \
+RUN apk add --update --no-cache \
     curl \
     wget \
     bash \ 
@@ -15,7 +15,9 @@ RUN apk add --update \
     libzip-dev \
     freetype-dev \
     libjpeg-turbo-dev \
-    libpng-dev
+    libpng-dev \
+    nodejs \
+    npm
 
 RUN docker-php-ext-install \
     pdo_mysql \
