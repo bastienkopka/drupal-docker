@@ -1,0 +1,12 @@
+name: Drupal 9.x PR
+
+on:
+  pull_request:
+    branches: [drupal-ci]
+
+jobs:
+  tests:
+    runs-on: self-hosted
+
+    container:
+      image: docker-images/php
