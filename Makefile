@@ -69,3 +69,7 @@ drupal-install:
 
 ### Global commands
 install: build composer-install fix-permissions drupal-install
+
+### Quality commands
+quality-phpcs:
+	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh -c './vendor/bin/phpcs --standard=./scripts/quality/phpcs.xml.dist'
