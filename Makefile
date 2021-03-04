@@ -80,3 +80,8 @@ quality-phpmd:
 		modules,themes \
 		ansi \
 		./scripts/quality/phpmd.xml --suffixes inc,info,install,module,php,test,theme'
+
+quality-phpstan:
+	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh -c './vendor/bin/phpstan \
+		analyse \
+		--configuration=./scripts/quality/phpstan.neon.dist'

@@ -1,0 +1,42 @@
+includes:
+  - ../../vendor/mglaman/phpstan-drupal/extension.neon
+
+parameters:
+  checkMissingIterableValueType: false
+  excludes_analyse:
+    - */tests/*
+    - */bower_components/*
+    - */node_modules/*
+  # Ignore some type hint errors due to hooks that should not have typed hint
+  # parameters or return.
+  ignoreErrors:
+    -
+      message: '#Function [a-zA-Z0-9\\_]+\(\) has parameter \$[a-zA-Z0-9\\_]+ with no typehint specified\.#'
+      paths:
+        - *.inc
+        - *.install
+        - *.module
+        - *.profile
+        - *.theme
+    -
+      message: '#Function [a-zA-Z0-9\\_]+\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type [a-zA-Z0-9\\_]+\.#'
+      paths:
+        - *.inc
+        - *.install
+        - *.module
+        - *.profile
+        - *.theme
+    -
+      message: '#Function [a-zA-Z0-9\\_]+\(\) has no return typehint specified\.#'
+      paths:
+        - *.inc
+        - *.install
+        - *.module
+        - *.profile
+        - *.theme
+  inferPrivatePropertyTypeFromConstructor: true
+  level: max
+  paths:
+    - ./../../modules/
+    - ./../../themes/
+  reportUnmatchedIgnoredErrors: false
