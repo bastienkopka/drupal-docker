@@ -72,4 +72,11 @@ install: build composer-install fix-permissions drupal-install
 
 ### Quality commands
 quality-phpcs:
-	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh -c './vendor/bin/phpcs --standard=./scripts/quality/phpcs.xml.dist'
+	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh -c './vendor/bin/phpcs \
+		--standard=./scripts/quality/phpcs.xml.dist'
+
+quality-phpmd:
+	@docker exec -u $(APP_USER) -it $(PHP_CONTAINER) /bin/sh -c './vendor/bin/phpmd \
+		modules,themes \
+		ansi \
+		./scripts/quality/phpmd.xml --suffixes inc,info,install,module,php,test,theme'
